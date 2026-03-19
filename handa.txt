@@ -1,0 +1,45 @@
+🔐 Offline Cracking - Complete Explanation with Example
+🎯 What Happened in Your Commands
+Let me break down exactly what your commands did and show you the results:
+Step 1-2: System Setup
+bash
+sudo apt update  # Updated package lists
+john             # Checked if John is installed
+Result: System ready, John the Ripper confirmed installed.
+Step 3-4: Wordlist Preparation
+bash
+cd /usr/share/wordlists
+sudo gunzip rockyou.txt.gz
+Result: You decompressed rockyou.txt - one of the most famous password lists with 14 million real passwords from a data breach.
+Step 5-6: Create Test Wordlist
+bash
+head -n 1000 rockyou.txt > rockyou-1000.txt
+wc -l rockyou-1000.txt
+Result: Created a smaller file with first 1000 passwords:
+text
+1000 rockyou-1000.txt
+Step 7: Create MD5 Hash (THE VICTIM PASSWORD)
+bash
+echo -n "password123" | md5sum | awk '{print $1}' > john-hashes.txt
+cat john-hashes.txt
+Result: Created hash file with this content:
+text
+482c811da5d5b4bc6d497ffa98491e38
+This is the MD5 hash of password123 that we'll try to crack.
+Step 8-9: Prepare for Attack
+bash
+echo "password123" >> rockyou-1000.txt
+grep "password" rockyou-1000.txt
+Result: Added our target password to wordlist and verified:
+text
+password123
+password
+password1
+... etc
+Step 10: Show Previous Results (Initially Empty)
+bash
+john --show --format=raw-md5 ~/john-hashes.txt
+Result: (Initially) Nothing shown - no passwords cracked yet.
+Step 11: THE ATTACK - Start Cracking
+bash
+john --format=raw-md5 --wordlist=~/rockyou-1000.txt ~/john-hashes.txt

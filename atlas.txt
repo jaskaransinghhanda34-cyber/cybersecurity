@@ -1,0 +1,64 @@
+🔥 THE CRACKING PROCESS EXPLAINED
+What John Actually Does:
+text
+HASH WE HAVE: 482c811da5d5b4bc6d497ffa98491e38
+
+John tries:
+1. Take "password" from wordlist → MD5("password") = 5f4dcc3b5aa765d61d8327deb882cf99 → NO MATCH
+2. Take "password1" from wordlist → MD5("password1") = 7c6a180b36896a0a8c02787eeafb0e4c → NO MATCH
+3. Take "password123" from wordlist → MD5("password123") = 482c811da5d5b4bc6d497ffa98491e38 → ✅ MATCH FOUND!
+Expected Output:
+text
+Using default input encoding: UTF-8
+Loaded 1 password hash (Raw-MD5 [MD5 256/256 AVX2 8x3])
+Warning: no OpenMP support for this hash type, consider --fork=4
+Press 'q' or Ctrl-C to abort, almost any other key for status
+password123       (?)
+1g 0:00:00:00 DONE (2024-01-01 12:00) 100.0g/s 100000p/s 100000c/s 100000C/s password123
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+Step 12: View Cracked Password
+bash
+john --show --format=raw-md5 ~/john-hashes.txt
+Final Result:
+text
+?:password123
+
+1 password hash cracked, 0 left
+🎯 REAL-WORLD EXAMPLE SCENARIO
+Imagine this happened to a real website:
+Hacker steals database containing:
+text
+username  |  hash
+----------|--------------------------------
+john      | 482c811da5d5b4bc6d497ffa98491e38
+Hacker runs offline cracking with rockyou.txt
+Finds match: 482c811da5d5b4bc6d497ffa98491e38 = password123
+Now hacker knows: John's password is password123
+Timeline:
+text
+┌─────────────────────────────────────────────┐
+│ REAL ATTACK TIMELINE                        │
+├─────────────────────────────────────────────┤
+│ 00:00:00 - Attack starts                    │
+│ 00:00:01 - Tries "password" (FAIL)          │
+│ 00:00:01 - Tries "password1" (FAIL)         │
+│ 00:00:01 - Tries "password123" (SUCCESS!)   │
+│ 00:00:01 - Password cracked!                │
+└─────────────────────────────────────────────┘
+Total time: Less than 1 second! ⚡
+⚡ SPEED COMPARISON: Why Offline is Dangerous
+Online Attack (Against Server):
+text
+Tries: 1... 2... 3...
+Server: "Too many attempts! Account locked!"
+Time: 30 seconds to lockout
+Result: FAILED ❌
+Offline Attack (Your Example):
+text
+Tries: 1 million passwords/second
+No rate limits
+No lockouts
+No detection
+Time: 0.000001 seconds per try
+Result: SUCCESS ✅
